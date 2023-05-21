@@ -18,7 +18,7 @@ app.post("/account", (req, res) => {
 	const cpfAlreadyExists = customers.some( customer => customer.cpf === cpf);
 
 	if(cpfAlreadyExists) {
-		return res.status(400).send({ error: 'cpf already exists!' })
+		return res.status(400).send({ error: 'account already exists!' })
 	}
 
 	customers.push({
@@ -31,6 +31,18 @@ app.post("/account", (req, res) => {
 	return res.status(201).send()
 })
 
+app.get("/statement/", (req, res) => {
 
+	const { cpf } = req.headers;
+
+	const customer = customers.find( customer => customer.cpf === cpf)
+
+	if(!customer) {
+		return res.status(400).send({ error: 'account not found!' })
+	}
+
+	return res.status(200).send(customer)
+
+})
 
 module.exports = app
